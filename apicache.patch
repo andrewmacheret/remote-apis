@@ -1,0 +1,12 @@
+--- a/node_modules/apicache/lib/apicache.js	2015-10-29 07:21:23.813968717 +0000
++++ b/node_modules/apicache/lib/apicache.js	2015-10-29 07:21:03.621968716 +0000
+@@ -114,7 +114,8 @@
+         res.send = function(a, b) {
+           var responseObj = {
+             headers: {
+-              'Content-Type': 'application/json; charset=utf-8'
++              'Content-Type': 'application/json; charset=utf-8',
++              'Access-Control-Allow-Origin': '*'
+             }
+           };
+ 
