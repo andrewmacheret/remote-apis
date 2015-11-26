@@ -1,9 +1,10 @@
 # remote-apis
 Node.js wrapper for remote APIs in order to circumvent cross-origin issues.
 
+Intended for use with [andrewmacheret/map-game](https://github.com/andrewmacheret/map-game)
+
 Prereqs:
 * [Node.js](https://nodejs.org/) on a linux server
-* [andrewmacheret/chess-server](https://github.com/andrewmacheret/chess-server)
 * A web server (like [Apache](https://httpd.apache.org/)).
 
 Installation steps:
