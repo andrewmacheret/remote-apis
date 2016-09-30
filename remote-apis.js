@@ -21,18 +21,13 @@ var remoteApis = settings.remoteApis;
 console.log('registering /');
 app.get('/', apicache('5 minutes'), function(req, res) {
   console.log('GET ' + req.originalUrl);
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  //res.setHeader('Access-Control-Allow-Origin', '*');
 
   res.set({
     'Content-Type': 'application/json'
   });
 
-  var baseUrl = req.protocol + '://' + req.get('host'); // + req.url
-  var apis = Object.keys(remoteApis).map(function(api) {
-    return baseUrl + api;
-  });
-
-  res.send(JSON.stringify({apis: apis}, 0, 4));
+  res.send(JSON.stringify({apis: remoteApis}, 0, 4));
 });
 
 Object.keys(remoteApis).forEach(function(api) {
@@ -41,7 +36,7 @@ Object.keys(remoteApis).forEach(function(api) {
 
   app.get(api, apicache('5 minutes'), function(req, res) {
     console.log('GET ' + req.originalUrl);
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    //res.setHeader('Access-Control-Allow-Origin', '*');
     
     // build the remote url
     var remoteUrl = remoteOptions.url;
@@ -53,7 +48,8 @@ Object.keys(remoteApis).forEach(function(api) {
     request(remoteUrl, function(err, response, body) {
       res.status(response.statusCode);
       res.set({
-        'Content-Type': response.headers['content-type']
+        //'Content-Type': response.headers['content-type']
+        'Content-Type': 'application/json'
       });
       res.send(body);
     });
