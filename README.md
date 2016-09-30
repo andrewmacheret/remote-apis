@@ -1,4 +1,7 @@
 # remote-apis
+
+[![Build Status](https://travis-ci.org/andrewmacheret/remote-apis.svg?branch=master)](https://travis-ci.org/andrewmacheret/remote-apis) [![Docker Stars](https://img.shields.io/docker/stars/andrewmacheret/remote-apis.svg)](https://hub.docker.com/r/andrewmacheret/remote-apis/) [![Docker Pulls](https://img.shields.io/docker/pulls/andrewmacheret/remote-apis.svg)](https://hub.docker.com/r/andrewmacheret/remote-apis/) [![License](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/andrewmacheret/remote-apis/blob/master/LICENSE.md)
+
 Node.js wrapper for remote APIs in order to circumvent cross-origin issues.
 
 Intended for use with [andrewmacheret/map-game](https://github.com/andrewmacheret/map-game)
