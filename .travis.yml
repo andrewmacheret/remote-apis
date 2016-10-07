@@ -5,11 +5,15 @@ language: node_js
 node_js:
   - '6'
 
+addons:
+  ssh_known_hosts: andrewmacheret.com
+
 env:
   global:
     # DOCKER_USERNAME and DOCKER_PASSWORD
     - secure: "JfNd30xF9Uik7h2MtOSsRX9GyltSh6FerU+UT+m/PY5HvRuXSim3G/kKdJpzIyPSq2qtzHS45UQ3AupRNDdc09++5PTUMwkSjP7VzHIdpY8v2XrWaUomQ0tpx74Tvm1NqqZJZuzQ9MZ9409ViMA1RBC1UmkZ2Yq7z5VUAdd88FfOnuHKefjIBhk0zJ6pOau1D0qfx51bIuTRyG1/FrLO7kGFsM3c/Y57SCZiqgarpinueB6CCIAVhLoeiWIyBGdzMZsjtzYTABf08MvhLMCZLKVRLPPdbyYrvDlM/dPxgSl/ptmrcpieeC0SSJgDeK5Vflly+ZLu58oQh3qKkRLlf2TORJFZ3+PI7LdDnO1zUlOWR6NAHF6ffIrqf5d7t5NbY/BHv5leLm8YwaW6dMAkGPfcezYnfNydRqgBuPPQBJmfZpxczgJeu9FnyHzx2LznSk5z3AusHGW6szEmEi/3toddW/dEIi6AQcUVERMf/xD2v83o6JHLZIn00bF9XmZw2O/m7pufLeOgHuAfBFpMLUCo4dSQQjKYB6qZMdgBBYr3wVDwGr6H4m+LQ+lMo2EZs9/Qi+1sXPSnNOxnZmvqVawaLg4Lf9vhRHqT6vF1RVURxHtv2izIWWG8GnkDpcVYLi9TJjM7t5DLYJuO9Wmfz3LO/SPxa1SAnuLRSRqiFRU="
     - secure: "ygRoSPEHe0pIHnZMF5u4g9FXkl+NwWrsHUuGumIy5j3mTiyAy8rVw/KqiB0rlEBveK0bT1rV66+DVjnTi0zbNNpD/n8I1IGlr0QK6jnCjoSEC/5CuWPPAWmY/oHWmTitwAbIdloxF/4Q73tQ/hMFaYqghQQHs3Zsr67Oq6T88N7eHLh0GA1UQPw/xS42ik2MtiMPWcIqcDP0MX7levI/NCIrzhbT8NQoStzqR88+ZpJVOJExxx4K8W9r+OPxFuFwenAmfYaQNt1LxByqmfz1LzNVBS5IujZZ9iPmPE8vKL5n3RBBQ8ZF464KFvB8T6POAM81eePAjODD8L14+Zb7qtO/SAE9q1Ybpa7F9mf3il2bj59Zc8xOB8CoHPT4w3LgMELGGbuh8tuua5U8GFCZo7lmeDNKgx5q4ykfwE0Vm7yV0v9YQ2qv/jzF8GH0xsmFRYgd6PxGKD2NbDfAIE3evhZtrIIxULr/WEzRGqHmfyIQ6aG9AU7k6JMlDU2oyu9Sg8pk1i88tN5bJ0cWj2oYRLw6g8xMK2K1Ag/Z6zU5SwErHG9yPnRhNK3lO9jbf1SaNE+sf95haARUh0XGBE6Sq2fSvhClxuiptyldVYx6K50AK6SnfPA+BYsDYNB923OxovPp0jz4jdANR933KPiJXfhArT2eaGc6shnI5EJar/0="
+    - SERVICE_NAME='remote-apis'
     - CONTAINER_NAME='remote-apis'
     - VERSION=1.0
     - TEST_PORT='9999'
@@ -55,3 +59,9 @@ after_success:
   - docker tag "${DOCKER_USERNAME}/${CONTAINER_NAME}":latest "${DOCKER_USERNAME}/${CONTAINER_NAME}":"${VERSION}"
   - docker push "${DOCKER_USERNAME}/${CONTAINER_NAME}":latest
   - docker push "${DOCKER_USERNAME}/${CONTAINER_NAME}":"${VERSION}"
+  # ssh deploy
+  - openssl aes-256-cbc -K $encrypted_a958962fad08_key -iv $encrypted_a958962fad08_iv -in id_rsa_a1-server.enc -out "${TRAVIS_BUILD_DIR}/id_rsa_a1-server" -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 "${TRAVIS_BUILD_DIR}/id_rsa_a1-server"
+  - ssh-add "${TRAVIS_BUILD_DIR}/id_rsa_a1-server"
+  - ssh ubuntu@andrewmacheret.com "cd ~/servers && docker-compose pull ${SERVICE_NAME} && docker-compose up -d --force-recreate ${SERVICE_NAME}"
