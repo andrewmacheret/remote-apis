@@ -21,7 +21,7 @@ var remoteApis = settings.remoteApis;
 console.log('registering /');
 app.get('/', apicache('5 minutes'), function(req, res) {
   console.log('GET ' + req.originalUrl);
-  res.setHeader('Access-Control-Allow-Origin', 'andrewmacheret.com');
+  res.setHeader('Access-Control-Allow-Origin', 'https://andrewmacheret.com');
 
   res.set({
     'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ Object.keys(remoteApis).forEach(function(api) {
 
   app.get(api, apicache('5 minutes'), function(req, res) {
     console.log('GET ' + req.originalUrl);
-    res.setHeader('Access-Control-Allow-Origin', 'andrewmacheret.com');
+    res.setHeader('Access-Control-Allow-Origin', 'https://andrewmacheret.com');
     
     // build the remote url
     var remoteUrl = remoteOptions.url;
