@@ -6,6 +6,8 @@ Node.js wrapper for remote APIs in order to circumvent cross-origin issues.
 
 Intended for use with [andrewmacheret/map-game](https://github.com/andrewmacheret/map-game)
 
+See it running at [https://remote-apis.andrewmacheret.com](https://remote-apis.andrewmacheret.com).
+
 ## Docker usage:
 
 Prereqs:
