@@ -34,7 +34,7 @@ Object.keys(remoteApis).forEach(function(api) {
   var remoteOptions = remoteApis[api];
   console.log('registering ' + api);
 
-  app.get(api, apicache('5 minutes'), function(req, res) {
+  app.get(api, apicache(remoteOptions.cache), function(req, res) {
     console.log('GET ' + req.originalUrl);
     res.setHeader('Access-Control-Allow-Origin', 'https://andrewmacheret.com');
     
