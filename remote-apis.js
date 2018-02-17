@@ -33,25 +33,27 @@ app.get('/', apicache('5 minutes'), function(req, res) {
 Object.keys(remoteApis).forEach(function(api) {
   var remoteOptions = remoteApis[api];
   console.log('registering ' + api);
-
-  app.get(api, apicache(remoteOptions.cache), function(req, res) {
-    console.log('GET ' + req.originalUrl);
-    res.setHeader('Access-Control-Allow-Origin', 'https://andrewmacheret.com');
-    
-    // build the remote url
-    var remoteUrl = remoteOptions.url;
-    Object.keys(req.params).forEach(function(param) {
-      var value = encodeURIComponent(req.params[param]);
-      remoteUrl = remoteUrl.replace('{' + param + '}', value);
-    });
-    
-    request(remoteUrl, function(err, response, body) {
-      res.status(response.statusCode);
-      res.set({
-        //'Content-Type': response.headers['content-type']
-        'Content-Type': 'application/json'
+  
+  (remoteOptions.methods || ['GET']).forEach(function(remoteMethod) {
+    app[remoteMethod.toLowerCase()](api, apicache(remoteOptions.cache), function(req, res) {
+      console.log('GET ' + req.originalUrl);
+      res.setHeader('Access-Control-Allow-Origin', remoteOptions.origin || 'https://andrewmacheret.com');
+      
+      // build the remote url
+      var remoteUrl = remoteOptions.url;
+      Object.keys(req.params).forEach(function(param) {
+        var value = encodeURIComponent(req.params[param]);
+        remoteUrl = remoteUrl.replace('{' + param + '}', value);
       });
-      res.send(body);
+      
+      request(remoteUrl, function(err, response, body) {
+        res.status(response.statusCode);
+        res.set({
+          //'Content-Type': response.headers['content-type']
+          'Content-Type': 'application/json'
+        });
+        res.send(body);
+      });
     });
   });
 });

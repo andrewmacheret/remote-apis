@@ -18,6 +18,11 @@ var remoteApis = {
   '/reddit/:_id/random.json': {
     url: 'https://reddit.com/r/{_id}/random.json',
     cache: '1 second'
+  },
+  '/stride-tabletop/:_path*': {
+    url: 'https://stride-tabletop.andrewmacheret.com/{_path}',
+    cache: '0 seconds',
+    origin: '*'
   }
 };
 
